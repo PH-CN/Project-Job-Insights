@@ -6,7 +6,7 @@ import csv
 def read(path):
     result = []
     with open(path) as file:
-        jobs_reader = csv.DictReader(file, delimiter=',')
+        jobs_reader = csv.DictReader(file, delimiter=",")
         for job in jobs_reader:
             result.append(job)
     return result
