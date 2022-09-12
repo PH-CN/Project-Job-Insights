@@ -9,6 +9,7 @@ def read(path):
         jobs_reader = csv.DictReader(file, delimiter=",")
         for job in jobs_reader:
             result.append(job)
+
     return result
     # """Reads a file from a given path and returns its contents
 
