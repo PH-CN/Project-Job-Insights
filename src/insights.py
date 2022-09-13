@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 from src.jobs import read
 
 
@@ -28,6 +29,19 @@ def get_unique_job_types(path):
 
 def filter_by_job_type(jobs, job_type):
     return [job for job in jobs if job["job_type"] == job_type]
+    # """Filters a list of jobs by job_type
+
+    # Parameters
+    # ----------
+    # jobs : list
+    # job_type : str
+    #     Industry for the list filter
+
+    # Returns
+    # -------
+    # list
+    #     List of jobs with provided job_type
+    # """
 
 
 def get_unique_industries(path):
@@ -122,29 +136,39 @@ def get_min_salary(path):
 
 
 def matches_salary_range(job, salary):
-    """Checks if a given salary is in the salary range of a given job
+    if 'max_salary' not in job or 'min_salary' not in job:
+        raise ValueError('max_salary or min_salary are missing')
+    elif type(job['max_salary']) != int or type(job['min_salary']) != int:
+        raise ValueError('max_salary or min_salary are not ints')
+    elif job['min_salary'] > job['max_salary']:
+        raise ValueError('min_salary is greather than max_salary')
+    elif type(salary) != int:
+        raise ValueError('salary is not an int')
+    else:
+        return job['min_salary'] <= salary < job['max_salary']
 
-    Parameters
-    ----------
-    job : dict
-        The job with `min_salary` and `max_salary` keys
-    salary : int
-        The salary to check if matches with salary range of the job
+    # """Checks if a given salary is in the salary range of a given job
 
-    Returns
-    -------
-    bool
-        True if the salary is in the salary range of the job, False otherwise
+    # Parameters
+    # ----------
+    # job : dict
+    #     The job with `min_salary` and `max_salary` keys
+    # salary : int
+    #     The salary to check if matches with salary range of the job
 
-    Raises
-    ------
-    ValueError
-        If `job["min_salary"]` or `job["max_salary"]` doesn't exists
-        If `job["min_salary"]` or `job["max_salary"]` aren't valid integers
-        If `job["min_salary"]` is greather than `job["max_salary"]`
-        If `salary` isn't a valid integer
-    """
-    pass
+    # Returns
+    # -------
+    # bool
+    #     True if the salary is in the salary range of the job, False otherwise
+
+    # Raises
+    # ------
+    # ValueError
+    #     If `job["min_salary"]` or `job["max_salary"]` doesn't exists
+    #     If `job["min_salary"]` or `job["max_salary"]` aren't valid integers
+    #     If `job["min_salary"]` is greather than `job["max_salary"]`
+    #     If `salary` isn't a valid integer
+    # """
 
 
 def filter_by_salary_range(jobs, salary):
