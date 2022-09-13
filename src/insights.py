@@ -136,16 +136,16 @@ def get_min_salary(path):
 
 
 def matches_salary_range(job, salary):
-    if 'max_salary' not in job or 'min_salary' not in job:
-        raise ValueError('max_salary or min_salary are missing')
-    elif type(job['max_salary']) != int or type(job['min_salary']) != int:
-        raise ValueError('max_salary or min_salary are not ints')
-    elif job['min_salary'] > job['max_salary']:
-        raise ValueError('min_salary is greather than max_salary')
+    if "max_salary" not in job or "min_salary" not in job:
+        raise ValueError("max_salary or min_salary are missing")
+    elif type(job["max_salary"]) != int or type(job["min_salary"]) != int:
+        raise ValueError("max_salary or min_salary are not ints")
+    elif job["min_salary"] > job["max_salary"]:
+        raise ValueError("min_salary is greather than max_salary")
     elif type(salary) != int:
-        raise ValueError('salary is not an int')
+        raise ValueError("salary is not an int")
     else:
-        return job['min_salary'] <= salary < job['max_salary']
+        return job["min_salary"] <= salary < job["max_salary"]
 
     # """Checks if a given salary is in the salary range of a given job
 
@@ -172,18 +172,35 @@ def matches_salary_range(job, salary):
 
 
 def filter_by_salary_range(jobs, salary):
-    """Filters a list of jobs by salary range
+    try:
+        result = []
+        filtered_jobs = []
+        for job in jobs:
+            if (
+                type(job["max_salary"]) == int
+                and type(job["min_salary"]) == int
+                and job["min_salary"] < job["max_salary"]
+            ):
+                filtered_jobs.append(job)
 
-    Parameters
-    ----------
-    jobs : list
-        The jobs to be filtered
-    salary : int
-        The salary to be used as filter
+        for job in filtered_jobs:
+            if matches_salary_range(job, salary):
+                result.append(job)
 
-    Returns
-    -------
-    list
-        Jobs whose salary range contains `salary`
-    """
-    return []
+        return result
+    except ValueError:
+        return []
+    # """Filters a list of jobs by salary range
+
+    # Parameters
+    # ----------
+    # jobs : list
+    #     The jobs to be filtered
+    # salary : int
+    #     The salary to be used as filter
+
+    # Returns
+    # -------
+    # list
+    #     Jobs whose salary range contains `salary`
+    # """
